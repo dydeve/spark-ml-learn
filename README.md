@@ -1,2 +1,2 @@
 # sparkLearn
-learn spark
+spark mllib
