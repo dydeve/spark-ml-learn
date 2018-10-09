@@ -72,7 +72,9 @@ val examples: RDD[LabeledPoint] = MLUtils.loadLibSVMFile(sc, "data/mllib/sample_
 
 #### <a id="local-matrix">Local matrix</a>
 本地向量有`integer`型的行、列索引，以及`double`型的值，存储在单台机器上。MLlib支持稠密矩阵，entry value以列的顺序(column-major)存储在一个double数组中；也支持稀疏矩阵，非0的entry value以CSC(Compressed Sparse Column 压缩稀疏列)格式、列顺序(column-major)存储.例如，下面的稠密矩阵
+
 ![](imgs/matrix.jpg)
+
 被存储在一维数组` [1.0, 3.0, 5.0, 2.0, 4.0, 6.0]`,矩阵大小为(3, 2)
 
 本地矩阵的基类为`Matrix`，提供了`DenseMatrix`和`SparseMatrix`两种实现。推荐使用` Matrices`的工厂方法创建本地向量。记住，MLlib里的本地向量以`column-major`的顺序存储。
