@@ -1,4 +1,5 @@
 ### Summary statistics 概括统计
+#### 简介
 为`RDD[Vector]`提供列的概括统计，通过调用`Statistics`的`colStats`方法。`colStats`方法返回`MultivariateStatisticalSummary`的实例，该实例包含列的最大值、最小值、平均值、方差、非0值的数量、以及总数(which contains the column-wise max, min, mean, variance, and number of nonzeros, as well as the total count.)。
 ```scala
 import org.apache.spark.mllib.linalg.Vectors
@@ -20,7 +21,7 @@ println(summary.numNonzeros)  // number of nonzeros in each column
 ```
 详见`examples/src/main/scala/org/apache/spark/examples/mllib/SummaryStatisticsExample.scala`
 
-解析：
+#### 解析：
 `Statistics`
 ```scala
  /**
@@ -56,10 +57,11 @@ println(summary.numNonzeros)  // number of nonzeros in each column
 想看懂`MultivariateOnlineSummarizer`，请先阅读[Algorithms for calculating variance](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance)
 
 `add`方法，处理单partition内的数据，计算均值、方差。公式如下:
-1. 在线算法(避免内存占用过大，以及数值溢出等)
-<div  align="center"><img src="imgs/welford's-online-algorithm.jpg" width = "425" height = "50" alt="welford's-online-algorithm.jpg" align="center" /></div>
-2. `Weighted incremental algorithm`加权增量算法
-<div  align="center"><img src="imgs/weighted-incremental-algorithm.jpg" width = "425" height = "50" alt="weighted-incremental-algorithm.jpg" align="center" /></div>
+- 在线算法(避免内存占用过大，以及数值溢出等)
+<div  align="center"><img src="imgs/welford's-online-algorithm.jpg" alt="welford's-online-algorithm.jpg" align="center" /></div>
+
+- `Weighted incremental algorithm`加权增量算法
+<div  align="center"><img src="imgs/weighted-incremental-algorithm.jpg" alt="weighted-incremental-algorithm.jpg" align="center" /></div>
 
 ```scala
  /**
@@ -130,7 +132,8 @@ println(summary.numNonzeros)  // number of nonzeros in each column
 `MultivariateOnlineSummarizer`
 
 `merge`方法合并partitions，使用`Parallel algorithm`并行算法，如图:
-<div  align="center"><img src="imgs/parallel-algorithm.jpg" width = "370" height = "270" alt="parallel-algorithm.jpg" align="center" /></div>
+<div  align="center"><img src="imgs/parallel-algorithm.jpg" alt="parallel-algorithm.jpg" align="center" /></div>
+
 ```scala
  /**
    * Merge another MultivariateOnlineSummarizer, and update the statistical summary.
@@ -234,7 +237,7 @@ println(summary.numNonzeros)  // number of nonzeros in each column
   }
 ```
 
-### 参考文献
+#### 参考文献
 [1] [Basic Statistics - RDD-based API - Summary statistics](http://spark.apache.org/docs/latest/mllib-statistics.html#summary-statistics)
 
 [2] [endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%9F%BA%E6%9C%AC%E7%BB%9F%E8%AE%A1/summary-statistics.md)
