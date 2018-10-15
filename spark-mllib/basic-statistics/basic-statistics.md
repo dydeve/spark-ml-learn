@@ -1,0 +1,7 @@
+* [Summary statistics(概括统计)](summay-statistics.md)
+* [Correlations(相关性系数)](correlations.md)
+* [Stratified sampling(分层抽样)](stratified-sampling.md)
+* [Hypothesis testing(假设检验)](hypothesis-testing.md)
+* [Streaming Significance Testing(流重要性测试)](streaming-significance-testing.md)
+* [Random data generation(随机数生成)](random-data-generation.md)
+* [Kernel density estimation(核密度估计)](kernel-density-estimation.md)

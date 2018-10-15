@@ -169,7 +169,7 @@ val indexedRowMatrix = mat.toIndexedRowMatrix()
 case class MatrixEntry(i: Long, j: Long, value: Double)
 ```
 ##### <a id="block-matrix">BlockMatrix</a>
-`BlockMatrix`是由`RDD[MatrixBlock]`组成的分布式矩阵，`MatrixBlock`是`((Int, Int), Matrix)`构成的元组，`(Int, Int)`是块的索引，`Matrix`是给定索引位置的子矩阵，大小为`rowsPerBlock x colsPerBlock`。`BlockMatrix`支持与另一个`BlockMatrix`的`add`或`multiply`方法。`BlockMatrix`也有一个帮助方法`validate`用来检测`BlockMatrix`是否被正确创建。
+`BlockMatrix`是由`RDD[MatrixBlock]`组成的分布式矩阵，`MatrixBlock`是`((Int, Int), Matrix)`构成的元组，`(Int, Int)`是块的索引，`Matrix`是给定索引位置的子矩阵(本地矩阵，稀疏或稠密)，大小为`rowsPerBlock x colsPerBlock`。`BlockMatrix`支持与另一个`BlockMatrix`的`add`或`multiply`方法。`BlockMatrix`也有一个帮助方法`validate`用来检测`BlockMatrix`是否被正确创建。
 
 `BlockMatrix`最容易通过`IndexedRowMatrix`或`CoordinateMatrix`的`toBlockMatrix`方法创建。默认创建`1024 * 1024`大小的块(blocks).用户可以通过`toBlockMatrix(rowsPerBlock, colsPerBlock)`改变block的大小。
 ```scala
