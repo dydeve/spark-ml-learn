@@ -21,6 +21,12 @@ println(summary.numNonzeros)  // number of nonzeros in each column
 ```
 详见`examples/src/main/scala/org/apache/spark/examples/mllib/SummaryStatisticsExample.scala`
 
+console:
+```text
+[2.0,20.0,200.0]
+[1.0,100.0,10000.0]
+[3.0,3.0,3.0]
+```
 #### 解析：
 `Statistics`
 ```scala
