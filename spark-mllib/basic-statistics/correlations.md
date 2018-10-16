@@ -120,10 +120,10 @@ Correlation is: 0.8500286768773001
 Spearman秩相关系数通常被认为是排列后的变量之间的Pearson线性相关系数，在实际计算中，有更简单的计算ρs的方法。假设原始的数据xi，yi已经按从大到小的顺序排列，记x’i，y’i为原xi，yi在排列后数据所在的位置，则x’i，y’i称为变量x’i，y’i的秩次，则di=x’i-y’i为xi，yi的秩次之差。
 
 如果没有相同的秩次，则ρs可由下式计算:
-<div  align="center"><img src="imgs/spearman-no-repest.png" alt="spearman-no-repest.png" align="left" /></div>
+<div  align="center"><img src="imgs/spearman-no-repest.png" alt="spearman-no-repest.png" align="center" /></div>
 
 如果有相同的秩次存在，那么就需要计算秩次之间的Pearson的线性相关系数
-<div  align="center"><img src="imgs/spearman-with-repeat.png" alt="spearman-with-repeat.png" align="left" /></div>
+<div  align="center"><img src="imgs/spearman-with-repeat.png" alt="spearman-with-repeat.png" align="center" /></div>
 
 ```scala
  /**
@@ -183,6 +183,20 @@ Spearman秩相关系数通常被认为是排列后的变量之间的Pearson线�
   }
 ```
 在每个分区内部，对于列索引相同且值相同的数据对，我们为其分配平均rank值。平均rank的计算方式如下面公式所示：
-<div  align="left"><img src="imgs/correlation-rank.png" alt="correlation-rank.png" align="left" /></div>
+<div  align="center"><img src="imgs/correlation-rank.png" alt="correlation-rank.png" align="center" /></div>
 其中rank_start表示列索引相同且值相同的数据对在分区中第一次出现时的索引位置，n表示列索引相同且值相同的数据对出现的次数。
 
+#### 参考
+[1][saprk correlations](http://spark.apache.org/docs/latest/mllib-statistics.html#correlations)
+
+[2][Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/?p=363)
+
+[3][Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/wp-content/uploads/2015/09/Pearson%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E5%92%8CSpearman%E7%A7%A9%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E4%BB%8B%E7%BB%8D.doc)
+
+[4][斯皮尔曼等级相关系数](https://zh.wikipedia.org/wiki/%E6%96%AF%E7%9A%AE%E5%B0%94%E6%9B%BC%E7%AD%89%E7%BA%A7%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0)
+
+[5][Pearson product-moment correlation coefficient](https://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient)
+
+[6][Spearman's rank correlation coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
+
+[7][endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%9F%BA%E6%9C%AC%E7%BB%9F%E8%AE%A1/correlations.md)
