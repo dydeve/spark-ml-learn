@@ -187,16 +187,16 @@ Spearman秩相关系数通常被认为是排列后的变量之间的Pearson线�
 其中rank_start表示列索引相同且值相同的数据对在分区中第一次出现时的索引位置，n表示列索引相同且值相同的数据对出现的次数。
 
 #### 参考
-[1][saprk correlations](http://spark.apache.org/docs/latest/mllib-statistics.html#correlations)
+[1] [saprk correlations](http://spark.apache.org/docs/latest/mllib-statistics.html#correlations)
 
-[2][Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/?p=363)
+[2] [Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/?p=363)
 
-[3][Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/wp-content/uploads/2015/09/Pearson%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E5%92%8CSpearman%E7%A7%A9%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E4%BB%8B%E7%BB%8D.doc)
+[3] [Pearson相关系数和Spearman秩相关系数介绍](http://wyb.biocuckoo.org/wordpress/wp-content/uploads/2015/09/Pearson%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E5%92%8CSpearman%E7%A7%A9%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E4%BB%8B%E7%BB%8D.doc)
 
-[4][斯皮尔曼等级相关系数](https://zh.wikipedia.org/wiki/%E6%96%AF%E7%9A%AE%E5%B0%94%E6%9B%BC%E7%AD%89%E7%BA%A7%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0)
+[4] [斯皮尔曼等级相关系数](https://zh.wikipedia.org/wiki/%E6%96%AF%E7%9A%AE%E5%B0%94%E6%9B%BC%E7%AD%89%E7%BA%A7%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0)
 
-[5][Pearson product-moment correlation coefficient](https://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient)
+[5] [Pearson product-moment correlation coefficient](https://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient)
 
-[6][Spearman's rank correlation coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
+[6] [Spearman's rank correlation coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
 
-[7][endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%9F%BA%E6%9C%AC%E7%BB%9F%E8%AE%A1/correlations.md)
+[7] [endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%9F%BA%E6%9C%AC%E7%BB%9F%E8%AE%A1/correlations.md)
