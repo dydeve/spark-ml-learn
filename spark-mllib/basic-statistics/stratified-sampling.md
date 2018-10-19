@@ -193,6 +193,12 @@ withReplacement=false，伯努利抽样
   }
 ```
 
+参数 | 含义
+---|---
+withReplacement | 每次抽样是否有放回
+fractions | 控制不同key的抽样率
+seed | 随机数种子
+
 ### 参考
 [1][endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%9F%BA%E6%9C%AC%E7%BB%9F%E8%AE%A1/tratified-sampling.md)
 

@@ -1,6 +1,5 @@
 ### Hypothesis testing 假设检验
 ---
-#### 简介
 假设检验是统计中的强力武器，决定结果是否统计有效、结果是否可能发生。`spark.mllib`当前支持皮尔森卡方检验(Pearson’s chi-squared ( χ2) tests ),具有适配度检测和独立性检测(goodness of fit and independence)。输入数据类型决定支持适配度检测或独立性检测。适配度检测需要输入`Vector`型数据，独立性检测需要`Matrix`型数据。
 
 - 适配度检测: 输入 `Vector`
@@ -157,6 +156,9 @@ No presumption against null hypothesis: the occurrence of the outcomes is statis
 
 入参为`RDD[LabeledPoint]`时，把特征数据中的每一列都与标签进行独立性检验
 
+
+### 参考
+---
 [1] [皮尔森卡方检验](https://zh.wikipedia.org/wiki/%E7%9A%AE%E7%88%BE%E6%A3%AE%E5%8D%A1%E6%96%B9%E6%AA%A2%E5%AE%9A)
 
 [2] [Pearson's_chi-squared_test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Examples)
@@ -165,6 +167,9 @@ No presumption against null hypothesis: the occurrence of the outcomes is statis
 
 [4] [厦门大学-赖永炫 基本的统计工具（2） - spark.mllib](http://mocom.xmu.edu.cn/article/show/584d1fc5bd8177b41ebbd8bc/0/1)
 
+
+### Kolmogorov-Smirnov检验
+---
 另外，`spark.mllib`提供了`Kolmogorov-Smirnov (KS) test`的`1-sample`、`2-sided`实现，检测概率分布的相等性。通过提供理论分布(当前只支持正太分布)的名字和参数，或者一个计算给定理论分布的累计分布的函数(a function to calculate the cumulative distribution according to a given theoretical distribution)。用户可以测试`虚无假设/0假设 null hypothesis`的样本是否来自于这个分布(the user can test the null hypothesis that their sample is drawn from that distribution.)。在这种场景下，用户检验正太分布 (distName="norm"),但是不提供分布参数，检验初始化为标准正太分布并且记录适当的信息。
 
 `Statistics`提供方法运行`1-sample`、`2-sided`KS检验(Kolmogorov-Smirnov test)。
@@ -219,6 +224,7 @@ pValue = 6.249999999763389E-7
 Very strong presumption against null hypothesis: Sample follows theoretical distribution.
 ```
 
+### [流式显著性检测](streaming-significance-testing.md)
 
 
 
