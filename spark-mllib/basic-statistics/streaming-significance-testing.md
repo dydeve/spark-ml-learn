@@ -116,3 +116,4 @@ No presumption against null hypothesis: Both groups have same mean.
 ---
 ### 参考
 [1] [显著性检验](https://wiki.mbalib.com/wiki/Significance_Testing)
+[2] [Streaming Significance Testing](http://spark.apache.org/docs/latest/mllib-statistics.html#streaming-significance-testing)
