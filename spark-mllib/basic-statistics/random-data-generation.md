@@ -1,5 +1,6 @@
 ### Random data generation 随机数生成
 
+#### 简介
 随机数生成，在随机算法、原型(prototyping)、性能测试中很有用。`spark.mllib`支持生成随机RDD，RDD的` i.i.d. values`来自于给定的分布:均匀分布、标准正太分布、泊松分布(uniform, standard normal, or Poisson.)
 
 `RandomRDDs`提供工厂方法生成随机double RDDs 或 vector RDDs。以下案例生成随机double RDD，它的值服从标准正太分布`N(0, 1)`,然后映射到`N(1, 4)`
@@ -86,9 +87,146 @@ Generated RDD of 10000 examples of length-2 vectors.
     [-0.7738875459250691,0.41244911335964196]
 ```
 
+#### 浅析
+对于`RandomRDDs.normalRDD`，
+```scala
+ /**
+   * 标准正太分布X ~ N(0, 1)
+   * Generates an RDD comprised of `i.i.d.` samples from the standard normal distribution.
+   * 
+   * To transform the distribution in the generated RDD from standard normal to some other normal
+   * `N(mean, sigma^2^)`, use `RandomRDDs.normalRDD(sc, n, p, seed).map(v => mean + sigma * v)`.
+   * N(0, 1) => N(mean, sigma^2^) = RandomRDDs.normalRDD(sc, n, p, seed).map(v => mean + sigma * v)
+   * @param sc SparkContext used to create the RDD.
+   * @param size Size of the RDD.
+   * @param numPartitions Number of partitions in the RDD (default: `sc.defaultParallelism`).
+   * @param seed Random seed (default: a random long integer).
+   * @return RDD[Double] comprised of `i.i.d.` samples ~ N(0.0, 1.0).
+   */
+  @Since("1.1.0")
+  def normalRDD(
+      sc: SparkContext,
+      size: Long,
+      numPartitions: Int = 0,
+      seed: Long = Utils.random.nextLong()): RDD[Double] = {
+    //Generates i.i.d. samples from the standard normal distribution
+    val normal = new StandardNormalGenerator()
+    randomRDD(sc, normal, size, numPartitionsOrDefault(sc, numPartitions), seed)
+  }
+  
+ /**
+   * :: DeveloperApi ::
+   * Generates an RDD comprised of `i.i.d.` samples produced by the input RandomDataGenerator.
+   *
+   * @param sc SparkContext used to create the RDD.
+   * @param generator RandomDataGenerator used to populate the RDD.
+   * @param size Size of the RDD.
+   * @param numPartitions Number of partitions in the RDD (default: `sc.defaultParallelism`).
+   * @param seed Random seed (default: a random long integer).
+   * @return RDD[T] comprised of `i.i.d.` samples produced by generator.
+   */
+  @DeveloperApi
+  @Since("1.1.0")
+  def randomRDD[T: ClassTag](
+      sc: SparkContext,
+      generator: RandomDataGenerator[T],
+      size: Long,
+      numPartitions: Int = 0,
+      seed: Long = Utils.random.nextLong()): RDD[T] = {
+    //构造RandomRDD
+    new RandomRDD[T](sc, size, numPartitionsOrDefault(sc, numPartitions), generator, seed)
+  }
+```
+重点看`StandardNormalGenerator`
+```scala
+/**
+ * :: DeveloperApi ::
+ * Generates i.i.d. samples from the standard normal distribution.
+ */
+@DeveloperApi
+@Since("1.1.0")
+class StandardNormalGenerator extends RandomDataGenerator[Double] {
 
+  // XORShiftRandom for better performance. Thread safety isn't necessary here.
+  // XORShiftRandom 性能更好，线程安全就不能保证
+  private val random = new XORShiftRandom()
 
+  @Since("1.1.0")
+  override def nextValue(): Double = {
+      random.nextGaussian()
+  }
 
+  @Since("1.1.0")
+  override def setSeed(seed: Long): Unit = random.setSeed(seed)
 
+  @Since("1.1.0")
+  override def copy(): StandardNormalGenerator = new StandardNormalGenerator()
+}
 
+/**
+ * This class implements a XORShift random number generator algorithm
+ * Source:
+ * Marsaglia, G. (2003). Xorshift RNGs. Journal of Statistical Software, Vol. 8, Issue 14.
+ * @see <a href="http://www.jstatsoft.org/v08/i14/paper">Paper</a>
+ * This implementation is approximately 3.5 times faster than
+ * {@link java.util.Random java.util.Random}, partly because of the algorithm, but also due
+ * to renouncing thread safety. JDK's implementation uses an AtomicLong seed, this class
+ * uses a regular Long. We can forgo thread safety since we use a new instance of the RNG
+ * for each thread.
+ */
+private[spark] class XORShiftRandom(init: Long) extends JavaRandom(init) {
+
+  def this() = this(System.nanoTime)
+
+  private var seed = XORShiftRandom.hashSeed(init)
+
+  // we need to just override next - this will be called by nextInt, nextDouble,
+  // nextGaussian, nextLong, etc.
+  override protected def next(bits: Int): Int = {
+    var nextSeed = seed ^ (seed << 21)
+    nextSeed ^= (nextSeed >>> 35)
+    nextSeed ^= (nextSeed << 4)
+    seed = nextSeed
+    (nextSeed & ((1L << bits) -1)).asInstanceOf[Int]
+  }
+
+  override def setSeed(s: Long) {
+    seed = XORShiftRandom.hashSeed(s)
+  }
+}
+```
+`XORShiftRandom`实现了XORShift随机数生成算法(XORShift random number generator algorithm)。该实现大约比`java.util.Random`快3.5倍，部分由于算法，部分由于放弃了线程安全。jdk的实现使用`AtomicLong`型的seed，`XORShiftRandom`使用`Long`型的seed。我们可以忽略线程安全，因为每个线程都使用新的`RNG`实例。
+
+以下为jdk的Random的next方法，可以与上面`XORShiftRandom`的next方法对比一下
+```java
+    protected int next(int bits) {
+        long oldseed, nextseed;
+        AtomicLong seed = this.seed;
+        do {
+            oldseed = seed.get();
+            nextseed = (oldseed * multiplier + addend) & mask;
+        } while (!seed.compareAndSet(oldseed, nextseed));
+        return (int)(nextseed >>> (48 - bits));
+    }
+```
+
+`RandomRDDs.normalVectorRDD`与`RandomRDDs.normalRDD`大同小异
+```scala
+  def normalVectorRDD(
+      sc: SparkContext,
+      numRows: Long,
+      numCols: Int,
+      numPartitions: Int = 0,
+      seed: Long = Utils.random.nextLong()): RDD[Vector] = {
+    val normal = new StandardNormalGenerator()
+    randomVectorRDD(sc, normal, numRows, numCols, numPartitionsOrDefault(sc, numPartitions), seed)
+  }
+```
+
+正太分布：
+<div  align="center"><img src="imgs/nomal-distribution.jpg" alt="nomal-distribution.jpg" align="center" /></div>
+
+#### 参考
+[1] [spark random-data-generation](http://spark.apache.org/docs/latest/mllib-statistics.html#random-data-generation)
+[2] [正太分布](https://zh.wikipedia.org/wiki/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83)
 
