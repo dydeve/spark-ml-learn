@@ -228,5 +228,6 @@ private[spark] class XORShiftRandom(init: Long) extends JavaRandom(init) {
 
 #### 参考
 [1] [spark random-data-generation](http://spark.apache.org/docs/latest/mllib-statistics.html#random-data-generation)
+
 [2] [正太分布](https://zh.wikipedia.org/wiki/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83)
 

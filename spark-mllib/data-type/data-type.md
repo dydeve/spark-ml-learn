@@ -190,10 +190,10 @@ val ata = matA.transpose.multiply(matA)
 ```
 
 #### 参考文献
-[spark Data Types - RDD-based API](http://spark.apache.org/docs/latest/mllib-data-types.html)
+[1] [spark Data Types - RDD-based API](http://spark.apache.org/docs/latest/mllib-data-types.html)
 
-[endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/data-type.md)
+[2] [endymecy's github](https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/data-type.md)
 
-[edium @rickynguyen](https://medium.com/@rickynguyen/getting-started-with-spark-day-5-36b62a6d13bf)
+[3] [edium @rickynguyen](https://medium.com/@rickynguyen/getting-started-with-spark-day-5-36b62a6d13bf)
 
-[稀疏矩阵存储格式总结+存储效率对比:COO,CSR,DIA,ELL,HYB](http://www.cnblogs.com/xbinworld/p/4273506.html)
+[4] [稀疏矩阵存储格式总结+存储效率对比:COO,CSR,DIA,ELL,HYB](http://www.cnblogs.com/xbinworld/p/4273506.html)
